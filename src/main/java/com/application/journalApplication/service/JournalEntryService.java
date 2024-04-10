@@ -2,12 +2,14 @@ package com.application.journalApplication.service;
 
 import com.application.journalApplication.entity.JournalEntry;
 import com.application.journalApplication.repository.JournalEntryRepository;
+import lombok.extern.slf4j.XSlf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 @Component
+
 public class JournalEntryService {
 
     @Autowired
