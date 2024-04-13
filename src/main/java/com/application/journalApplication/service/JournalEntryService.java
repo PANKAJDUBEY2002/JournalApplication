@@ -7,6 +7,7 @@ import com.application.journalApplication.repository.UserRepository;
 import lombok.extern.slf4j.XSlf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,11 +22,20 @@ public class JournalEntryService {
     @Autowired
     private UserService userService;
 
+
+    @Transactional
     public void saveEntry(JournalEntry journalEntry, User user)
     {
-        user.getJournalEntries().add(journalEntry);
-        journalEntryRepository.save(journalEntry);
-        userService.saveEntry(user);
+        try {
+            user.getJournalEntries().add(journalEntry);
+            journalEntryRepository.save(journalEntry);
+            userService.saveEntry(user);
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+            throw new RuntimeException("An error occured while saving the entry",e);
+        }
 
     }
     public void saveEntry(JournalEntry journalEntry)
