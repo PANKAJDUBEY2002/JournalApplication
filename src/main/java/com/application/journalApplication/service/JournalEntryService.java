@@ -29,7 +29,7 @@ public class JournalEntryService {
         try {
             user.getJournalEntries().add(journalEntry);
             journalEntryRepository.save(journalEntry);
-            userService.saveEntry(user);
+            userService.saveMyEntry(user);
         }
         catch (Exception e)
         {
@@ -55,12 +55,24 @@ public class JournalEntryService {
     {
         return journalEntryRepository.findById(id);
     }
-
+    @Transactional
     public void deleteById(String id,User user)
     {
-        user.getJournalEntries().removeIf(x->x.getId().equals(id));
-        userService.saveEntry(user);
-        journalEntryRepository.deleteById(id);
+        boolean removed=false;
+        try {
+            removed=user.getJournalEntries().removeIf(x->x.getId().equals(id));
+            if(removed)
+            {
+                userService.saveMyEntry(user);
+                journalEntryRepository.deleteById(id);
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+            throw new RuntimeException("An error occcured during save a entry",e);
+        }
+
     }
 
 }
