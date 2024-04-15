@@ -25,6 +25,8 @@ public class User {
     private String userName;
     @NonNull
     private String password;
+    private String email;
+    private String sentimentAnalysis;
      @DBRef
     private List<JournalEntry> journalEntries=new ArrayList<>();
      private List<String> roles;
